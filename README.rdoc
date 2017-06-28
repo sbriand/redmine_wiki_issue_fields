@@ -1,0 +1,45 @@
+h1. Description
+
++Purpose :+
+
+Display a list of issues and some of their properties in a wiki page. The text is click-able, making a link to the issue itself.
+
++Syntax:+
+
+<pre>Single issue : {{issue_fields(issue_id,[options],[arguments])}}
+List of issues : {{issue_fields(issue_id_1 issue_id_2,[options],[arguments])}}</pre>
+_issue_id_ : issue number
++Options:+
+* +l : Add html link
+* +p : display the project name number
+* +i : display the issue number
+* +c : display the field caption of any field after this option
+* +s : specify a separator to be used instead of coma
+
++Arguments:+
+
+* Natives issue field : project, tracker, parent, status, priority, subject, author, assigned_to, updated_on, category, fixed_version, start_date, due_date, estimated_hours, done_ratio, created
+* Custom issue fields name
+
++Examples:
+<pre>{{issue_fields(1,subject)}} ->  This is the subject of the issue number 1
+{{issue_fields(2,+c,subject)}} ->  Subject : This is the subject of the issue number 2
+{{issue_fields(3,+p,+i,subject)}} ->  test - #3, This is the subject of the issue number 3
+{{issue_fields(1 2 3,subject)}} -> This is the subject of the issue number 1
+                                   This is the subject of the issue number 2
+                                   This is the subject of the issue number 3</pre>
+
+
++Support :+
+
+Any comments, suggestions or problem report can be made in the forum : "Plugin Wiki Issue Fields : feedback, suggestion, reporting problems":/boards/3/topics/39662
+
+
+
+h1. Installation
+
+Installation process is quiet simple.
+
+Unzip the file in the plugin folder of Redmine, then restart Redmine.
+
+The name of the folder must be *wiki_issue_fields*.

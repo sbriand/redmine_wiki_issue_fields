@@ -319,6 +319,8 @@ module WikiIssueFieldsMacro
                          end
                      elsif c.custom_field.field_format == "enumeration"
                        sortie << CustomFieldEnumeration.find_by_id(c.value).name
+                     elsif c.custom_field.field_format == "text"
+                       sortie << textilizable(c.value)
                      else
                          sortie << c.value
                      end

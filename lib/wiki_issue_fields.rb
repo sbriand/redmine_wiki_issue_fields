@@ -35,7 +35,7 @@ module WikiIssueFieldsMacro
     macro :issue_fields do |obj, args|
     
   ##############################################################################
-    
+
       return textilizable(error_message) unless args.length > 0
 
       #issue_id = args[0].strip
@@ -282,14 +282,12 @@ module WikiIssueFieldsMacro
             end
 
             if entre == "relations" ## 17 ##
-              @relations = issue.relations
-              @issue = issue
-              relation_div << render(:partial => 'relations').html_safe
+              relation_div <<  render(:partial => 'wiki/relations', :locals => {:relations => issue.relations, :issue => issue})
             end
 
             if entre == "children"   ### 18 ###
 
-              relation_div << render(:partial => 'descendants_tree', :locals => {:issue => issue}).html_safe
+              relation_div << render(:partial => 'wiki/descendants_tree', :locals => {:issue => issue}).html_safe
             end
 
             ######################################################################

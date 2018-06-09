@@ -296,12 +296,16 @@ module WikiIssueFieldsMacro
               content =  content_tag('tr', content_tag('th', 'Id') + content_tag('th', 'Description'))
               issue = Issue.find_by_id(args.first)
               journal_ids.each do |journal_id|
-                journal = issue.journals[journal_id.to_i]
-                if !journal.nil?
-                  if !journal.notes.blank?
-                    content <<  content_tag('tr', content_tag('td', journal_id) + content_tag('td', textilizable(journal, :notes)))
-                  else
-                    content <<  content_tag('tr', content_tag('td', journal_id) + content_tag('td', t(:journal_no_note)))
+                index = journal_id.to_i
+                if index > 0
+                  index -= 1
+                  journal = issue.journals[index]
+                  if !journal.nil?
+                    if !journal.notes.blank?
+                      content <<  content_tag('tr', content_tag('td', journal_id.to_i) + content_tag('td', textilizable(journal, :notes)))
+                    else
+                      content <<  content_tag('tr', content_tag('td', journal_id.to_i) + content_tag('td', t(:journal_no_note)))
+                    end
                   end
                 end
               end

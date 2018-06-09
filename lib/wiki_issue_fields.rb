@@ -20,12 +20,13 @@ module WikiIssueFieldsMacro
 	       "* +s : specify a separator to be used instead of coma\n\n" +
          "+Arguments:+\n" +
          "* Natives issue field : project, tracker, parent, children, status, priority, subject, author, assigned_to, updated_on, \n" +
-         "                        category, fixed_version, start_date, due_date, estimated_hours, done_ratio, created, relations\n" +
+         "                        category, fixed_version, start_date, due_date, estimated_hours, done_ratio, created, relations, journal\n" +
          "* Custom issue fields name\n\n" +
          "+Examples:+\n" +
          "<pre>{{issue_fields(1,subject)}} ->  This is the subject of the issue number 1\n" +
          "{{issue_fields(2,+c,subject)}} ->  Subject : This is the subject of the issue number 2\n" +
          "{{issue_fields(3,+p,+i,subject)}} ->  test - #3, This is the subject of the issue number 3\n" +
+         "{{issue_fields(3,journal=1 2)}} ->  display journal entries 1 and 2\n" +
          "{{issue_fields(1 2 3,subject)}} -> This is the subject of the issue number 1\n" +
          "                                   This is the subject of the issue number 2\n" +
          "                                   This is the subject of the issue number 3</pre>"
@@ -286,8 +287,25 @@ module WikiIssueFieldsMacro
             end
 
             if entre == "children"   ### 18 ###
-
               relation_div << render(:partial => 'wiki/descendants_tree', :locals => {:issue => issue}).html_safe
+            end
+
+            if entre.start_with?('journal') ## 19 ##
+              journal_ids = entre.delete("journal").delete("=").split
+
+              content =  content_tag('tr', content_tag('th', 'Id') + content_tag('th', 'Description'))
+              issue = Issue.find_by_id(args.first)
+              journal_ids.each do |journal_id|
+                journal = issue.journals[journal_id.to_i]
+                if !journal.nil?
+                  if !journal.notes.blank?
+                    content <<  content_tag('tr', content_tag('td', journal_id) + content_tag('td', textilizable(journal, :notes)))
+                  else
+                    content <<  content_tag('tr', content_tag('td', journal_id) + content_tag('td', t(:journal_no_note)))
+                  end
+                end
+              end
+              sortie << content_tag('table', content.html_safe )
             end
 
             ######################################################################

@@ -293,7 +293,7 @@ module WikiIssueFieldsMacro
             if entre.start_with?('journal') ## 19 ##
               journal_ids = entre.delete("journal").delete("=").split
 
-              content =  content_tag('tr', content_tag('th', 'Id') + content_tag('th', 'Description'))
+              content =  content_tag('tr', content_tag('th', 'Id') + content_tag('th', 'Description') + content_tag('th', t(:review_buyer)) + content_tag('th', 'Date'))
               issue = Issue.find_by_id(args.first)
               journal_ids.each do |journal_id|
                 index = journal_id.to_i
@@ -302,9 +302,11 @@ module WikiIssueFieldsMacro
                   journal = issue.journals[index]
                   if !journal.nil?
                     if !journal.notes.blank?
-                      content <<  content_tag('tr', content_tag('td', journal_id.to_i) + content_tag('td', textilizable(journal, :notes)))
+                      content <<  content_tag('tr', content_tag('td', journal_id.to_i) + content_tag('td', textilizable(journal, :notes)) \
+                                  + content_tag('td', journal.user.name) + content_tag('td', journal.created_on.strftime("%y/%m/%d")))
                     else
-                      content <<  content_tag('tr', content_tag('td', journal_id.to_i) + content_tag('td', t(:journal_no_note)))
+                      content <<  content_tag('tr', content_tag('td', journal_id.to_i) + content_tag('td', t(:journal_no_note)) \
+                                 + content_tag('td', "")  + content_tag('td', ""))
                     end
                   end
                 end

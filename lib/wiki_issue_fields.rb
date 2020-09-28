@@ -186,9 +186,9 @@ module WikiIssueFieldsMacro
                sortie << h(issue.category)
             end           
   
-            if entre == "target_version"   ### 8 ###
+            if entre == "fixed_version"   ### 8 ###
                sortie_name << "Target Version: "
-               sortie << h(issue.target_version)
+               sortie << h(issue.fixed_version)
             end 
   
             if entre == "duration"   ### 9 ###

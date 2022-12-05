@@ -314,6 +314,28 @@ module WikiIssueFieldsMacro
               sortie << content_tag('table', content.html_safe )
             end
 
+            if entre.start_with?('note') ## 19 ##
+              journal_ids = entre.delete("note").delete("=").split
+
+              content =  content_tag('div', '')
+              issue = Issue.find_by_id(args.first)
+              journal_ids.each do |journal_id|
+                index = journal_id.to_i
+                if index > 0
+                  index -= 1
+                  journal = issue.journals[index]
+                  if !journal.nil?
+                    if !journal.notes.blank?
+                      content <<  content_tag('div',  textilizable(journal, :notes) )
+                    else
+                      content <<  content_tag('div',  textilizable(journal, :notes) )
+                    end
+                  end
+                end
+              end
+              sortie << content_tag('div', content.html_safe )
+            end
+
             ######################################################################
             # Manage the custom fields
             ######################################################################
